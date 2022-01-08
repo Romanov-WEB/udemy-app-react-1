@@ -1,6 +1,6 @@
+import { Component } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 import './employees-add-form.css';
-import { Component } from 'react/cjs/react.production.min';
 
 export default class EmployeesAddForm extends Component{
     constructor(props){
