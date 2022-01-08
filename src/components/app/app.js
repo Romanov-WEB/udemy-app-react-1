@@ -11,9 +11,9 @@ class App extends Component {
 
     state= {
         data:[
-            {name: 'John C.', salary: 800, increase: false, id: 1},
-            {name: 'Alex M.', salary: 3000, increase: true, id: 2},
-            {name: 'Carl W.', salary: 5000, increase: false, id: 3}
+            {name: 'John C.', salary: 800, increase: false, rise: false, id: 1},
+            {name: 'Alex M.', salary: 3000, increase: true, rise: true, id: 2},
+            {name: 'Carl W.', salary: 5000, increase: false, rise: false, id: 3}
         ]
     }
 
@@ -33,6 +33,21 @@ class App extends Component {
         })
     }
 
+    onToggle = (id, prop) => {
+        console.log(id, prop);
+        this.setState(({data}) => {
+            return {
+                data: data.map(item => {
+                    if (item.id === id) {
+                        return{ ...item, [prop]: !item[prop]
+                        }
+                    }
+                    return item
+                })
+            }
+        })
+    }
+
     render(){
         return (
             <div className="app">
@@ -43,7 +58,11 @@ class App extends Component {
                     <AppFilter/>
                 </div>
                 
-                <EmployeesList data={this.state.data} deleteList={this.deleteList} />
+                <EmployeesList 
+                    data={this.state.data} 
+                    deleteList={this.deleteList}
+                    onToggle={this.onToggle}
+                />
                 <EmployeesAddForm addList={this.addList}/>
             </div>
         )
