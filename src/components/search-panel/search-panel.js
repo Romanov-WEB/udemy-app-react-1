@@ -1,10 +1,12 @@
 import './search-panel.css';
 
-const SearchPanel = () => {
+const SearchPanel = ({onUpdateSearch}) => {
     return (
         <input type="text"
                 className="form-control search-input"
-                placeholder="Найти сотрудника"/>
+                placeholder="Найти сотрудника"
+               onChange={(e) => onUpdateSearch(e.target.value)}
+        />
     )
 }
 

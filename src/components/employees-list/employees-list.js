@@ -10,8 +10,7 @@ const EmployeesList = ({ data, deleteList, onToggle }) => {
             <EmployeesListItem 
                 key={id} 
                 deleteList={() => deleteList(item)} 
-                toggleIncrease={()=> onToggle(id, 'increase')} 
-                toggleRise={() => onToggle(id, 'rise')} 
+                onToggle={(e)=> onToggle(id, e.currentTarget.getAttribute('data-toggle'))} 
                 {...itemProps}
             />
         )
