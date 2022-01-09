@@ -9,6 +9,8 @@ export default class EmployeesAddForm extends Component{
         this.state = {
             name: '',
             salary: '',
+            increase: false,
+            rise: false,
             id: ''
         }
     }
@@ -16,15 +18,14 @@ export default class EmployeesAddForm extends Component{
     onValueChange = (e) => {
         this.setState({
             [e.target.name]: e.target.value,
-            increase: false,
             id: uuidv4()
         })
+
     }
     resetForm = () => {
         this.setState({
             name: '',
-            salary: '',
-            id: ''
+            salary: ''
         })
     }
 

@@ -11,18 +11,22 @@ class App extends Component {
 
     state= {
         data:[
-            {name: 'John C.', salary: 800, increase: false, rise: false, id: 1},
-            {name: 'Alex M.', salary: 3000, increase: true, rise: true, id: 2},
+            {name: 'John C.', salary: 800, increase: false, rise: true, id: 1},
+            {name: 'Alex M.', salary: 3000, increase: true, rise: false, id: 2},
             {name: 'Carl W.', salary: 5000, increase: false, rise: false, id: 3}
-        ]
+        ],
+        filter: 'all',
+        term: ''
     }
 
     addList = (list) => {
-        this.setState(({data})=> {
-            return {
-                data: [list, ...data]
-            }
-        })
+        if (list.name.trim().length >= 2 && list.salary.trim()) {
+            this.setState(({data})=> {
+                return {
+                    data: [list, ...data]
+                }
+            })
+        }
     }
 
     deleteList = (list) => {
@@ -34,13 +38,11 @@ class App extends Component {
     }
 
     onToggle = (id, prop) => {
-        console.log(id, prop);
         this.setState(({data}) => {
             return {
                 data: data.map(item => {
                     if (item.id === id) {
-                        return{ ...item, [prop]: !item[prop]
-                        }
+                        return{ ...item, [prop]: !item[prop] }
                     }
                     return item
                 })
@@ -48,18 +50,60 @@ class App extends Component {
         })
     }
 
+    onUpdateSearch = (term) => {
+        this.setState({term});
+    }
+
+    onUpdateFilter = (filter) => {
+        this.setState({filter});
+    }
+
+    searchEmployee = (items, term) => {
+        if (term.length === 0) {
+            return items;
+        }
+        return items.filter(item => {
+            return item.name.toLowerCase().indexOf(term) > -1
+        })
+    }
+
+    filterEmployee = (data, filter) => {
+        switch (filter) {
+            case 'rise':
+                return data.filter(item => item.rise)
+            case 'min1000':
+                return data.filter(item => item.salary > 1000);
+            default:
+                return data;
+        }
+    }
+
+
     render(){
+        const { data, filter, term } = this.state;
+        const employees = this.state.data.length;
+        const increases = this.state.data.filter(item => item.increase).length;
+        const user = this.filterEmployee(this.searchEmployee(data, term), filter)
+
         return (
             <div className="app">
-                <AppInfo />
+                <AppInfo 
+                    employees={employees}
+                    increases={increases}
+                 />
     
                 <div className="search-panel">
-                    <SearchPanel/>
-                    <AppFilter/>
+                    <SearchPanel
+                        onUpdateSearch={this.onUpdateSearch}
+                    />
+                    <AppFilter
+                        onUpdateFilter={this.onUpdateFilter}
+                        clazz={this.state.filter}
+                    />
                 </div>
                 
                 <EmployeesList 
-                    data={this.state.data} 
+                    data={user}
                     deleteList={this.deleteList}
                     onToggle={this.onToggle}
                 />
